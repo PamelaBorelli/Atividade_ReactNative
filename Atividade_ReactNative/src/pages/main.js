@@ -1,6 +1,7 @@
 import React, { Component} from "react";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Keyboard, ActivityIndicator} from 'react-native';
 import api from '../services/api';
 import {
     Container,
@@ -19,44 +20,62 @@ import {
 
 export default class Main extends Component {
     state = {
-        newCard: '',
-        cards: [],
-        loading: false
+        newCharacter: '',
+        characters: [],
+        loading: false,
     }
 
+
+    async componentDidMount() {
+      const characters = await AsyncStorage.getItem('characters');
+  
+      if (characters) {
+        this.setState({characters: JSON.parse(characters)});
+      }
+    }
+  
+    async componentDidUpdate(_, prevState) {
+      const {characters} = this.state;
+  
+      if (prevState.characters !== characters) {
+        await AsyncStorage.setItem('characters', JSON.stringify(characters));
+      }
+    }
+  
     handleAddCard = async () => {
         try{
-            const {cards, newCard} = this.state
+            const {characters, newCharacter} = this.state
 
             this.setState({loading: true})
 
-            const response = await api.get(`/cards/${newCard}`)
+            const response = await api.get(`/characters/${newCharacter}`)
 
             const data = {
                 name: response.data.name,
-                status: response.data.status,
+                url: response.data.url,
                 species: response.data.species,
-                type: response.data.type,
-                gender:  response.data.gender
+                image: response.data.avatar,
+                login: response.data.login,
+
             }
 
             this.setState({
-                cards: [...cards, data],
-                newCard: '',
-                loading: false,
+              characters: [...characters, data],
+              newCharacter: '',
+              loading: false,
             })
 
-            Keyboard.dismiss();
+        Keyboard.dismiss();
 
         }catch(error){
-            Alert('Card não encontrado')
-            this.setState({loading: false})
+          alert('Personagem não encontrado')
+          this.setState({loading: false})
         }
         console.log(response.data);
     }
 
     render(){
-        const { cards, newCard, loading } = this.state;
+        const { characters, newCharacter, loading } = this.state;
 
         return(
             <Container>
@@ -64,9 +83,9 @@ export default class Main extends Component {
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                placeholder="Adicionar card"
-                value={newCard}
-                onChangeText={text => this.setState({newCard: text})}
+                placeholder="Procurar Personagem"
+                value={newCharacter}
+                onChangeText={text => this.setState({newCharacter: text})}
                 returnKeyType="send"
                 onSubmitEditing={this.handleAddCard}
               />
@@ -79,6 +98,36 @@ export default class Main extends Component {
           </SubmitButton>
         </Form>
 
+        <List
+          showsVerticalScrollIndicator={false}
+          data={characters}
+          keyExtractor={character => character.login}
+          renderItem={({item}) => (
+            <User>
+              <Avatar source={{uri: item.image}} />
+              <Name>{item.name}</Name>
+              <Bio>{item.species}</Bio>
+
+              {/* <ProfileButton onPress={() => (
+                this.props.navigation.navigate('character', {character: item})
+              )}>
+                <ProfileButtonText>Ver perfil</ProfileButtonText>
+              </ProfileButton>
+
+              <ProfileButton
+                onPress={() => {
+                  this.setState({
+                    cards: this.state.cards.filter(
+                      character => character.url !== character.url,
+                    ),
+                  });
+                }}
+                style={{backgroundColor: '#FFC0CB', borderRadius: 10}}>
+                <ProfileButtonText>Excluir</ProfileButtonText>
+              </ProfileButton> */}
+            </User>
+          )}
+        />     
 
         </Container>
         )
