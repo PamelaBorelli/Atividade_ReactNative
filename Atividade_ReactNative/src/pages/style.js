@@ -82,3 +82,73 @@ export const ProfileButtonText = styled.Text`
     color: #fff;
     text-transform: uppercase;
 `;
+
+export const Header = styled.View`
+    padding-top: 30px;
+    align-Items: center;
+    justify-content: center;
+`;
+        
+export const Avatarperfil = styled.Image`
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: #eee;
+
+`;
+export const Nameperfil = styled.Text`
+    font-size: 16px;
+    color: #333;
+    font-weigth: bold;
+    margin-top: 4px;
+    text-align: center;
+`; 
+
+export const Bioperfil = styled.Text`
+    font-size: 10px;
+    line-height: 10px;
+    color: #999;
+    margin-top: 5px;
+    text-align: center;
+` ;
+
+export const Stars = styled.FlatList.attrs({
+    showsVerticalScrollIndicator: false,
+
+})`
+    margin-top: 20px;
+`;
+
+export const Starred = styled.View`
+    background: #fefefe;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const OwnerAvatar = styled.Image`
+    width: 42px;
+    height: 42px;
+    border-radius: 21px;
+    background: #eee;
+`;
+
+export const Info = styled.View`
+    margin-left: 10px;
+    flex: 1;
+`; 
+export const Title = styled.Text.attrs({
+    numberOfLInes: 1,
+})`
+    font-sise: 15px;
+    font-weight: bold;
+    color: #333;
+`;
+export const Author = styled.Text`
+    font-sise: 15px;
+    color: #666;
+    margin-top: 2px;
+`;
+

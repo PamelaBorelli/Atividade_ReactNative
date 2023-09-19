@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import api from "../services/api";
-import {Container } from "./style";
+import { Container, 
+    Header, 
+    Avatarperfil, 
+    Nameperfil, 
+    Bioperfil, 
+    Stars, 
+    Starred,
+    OwnerAvatar, 
+    Info, 
+    Title, 
+    Author } from "./style";
 
 export default class Character extends Component {
 
@@ -11,39 +21,40 @@ export default class Character extends Component {
 
     async componentDidMount (){
         const { route } = this.props;
-        const { character } = route.params;
-        const response = await api.get(`characters/${character.login}/character`)
+        const results  = route.params;
+        const response = await api.get(`character/?name=${results.name}`);
+
 
         this.setState({infos: response.data})
-        console.log(response.data);
+
     }
 
     render (){
         const { route } = this.props;
-        const { character } = route.params;
+        const { results } = route.params;
         const { infos } = this.state
 
         return (
             <Container> 
                 <Header>
                     
-                    <Avatarperfil source = {{uri: character.image}}/>
-                    <Nameperfil> {character.name} </Nameperfil>
-                    <Bioperfil> {character.species} </Bioperfil>
+                    <Avatarperfil source = {{uri: results.image}}/>
+                    <Nameperfil> {results.name} </Nameperfil>
+                    <Bioperfil> {results.species} </Bioperfil>
                 
                 </Header>
 
             <Stars 
             
             data={infos}
-            keyExtractor = { (info) => String(info.id)}
+            keyExtractor = { (results) => String(results.name)}
             renderItem = {({item}) => (
                 
                 <Starred>
-                        <OwnerAvatar source = {{uri: item.owner.avatar_url}}/>
+                        <OwnerAvatar source = {{uri: item.image}}/>
                         <Info>
                             <Title>{item.name}</Title>
-                            <Author>{item.owner.login}</Author>
+                            <Author>{item.species}</Author>
                         </Info>
                 </Starred>
             )}

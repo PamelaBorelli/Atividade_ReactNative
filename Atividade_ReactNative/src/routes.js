@@ -4,7 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Login from './pages/login';
 import Register from "./pages/register";
-import Main from "./pages/main";
+import CharacterDetail from "./pages/CharacterDetail";
+import CharacterSearch from "./pages/main"
+// import Character from "./pages/character"
 
 const Stack = createStackNavigator();
 
@@ -36,7 +38,7 @@ export default function Routes() {
                     }
                 }}/>
 
-<           Stack.Screen name="main" component={Main} options={{
+<           Stack.Screen name="main" component={CharacterSearch} options={{
                     title: 'CARDS RICK e MORTY',
                     headerTitleAlign: 'center',
                     headerStyle:{
@@ -48,7 +50,21 @@ export default function Routes() {
                     }
                 }}/>
 
-            </Stack.Navigator>
+<           Stack.Screen name="CharacterDetail" component={CharacterDetail} options={{
+                    title: 'CARDS RICK e MORTY',
+                    headerTitleAlign: 'center',
+                    headerStyle:{
+                        backgroundColor:'#3498db',
+                    },
+                    headerTitleStyle:{
+                        fontWeight: 'bold',
+                        color: '#fff'
+                    }
+                }}/>
+
+
+
+        </Stack.Navigator>
         </NavigationContainer>
     )
 }
