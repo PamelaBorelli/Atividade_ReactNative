@@ -154,6 +154,7 @@
 
 import { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet, SafeAreaView, Pressable, TextInput, Alert, Image } from "react-native"
+import { SubmitButton } from "./style";
 
 
 const CharacterSearch = ({ navigation }) => {
@@ -194,8 +195,11 @@ const CharacterSearch = ({ navigation }) => {
     }
 
     const renderItem = ({ item }) => (
+
+        
         <Pressable onPress={() => {
             navigation.navigate('CharacterDetail', { image: item.image, name: item.name, species: item.species, episodesNumbers: extract(item.episode) })
+        
         }}>
             <View>
                 <View>
@@ -222,15 +226,22 @@ const CharacterSearch = ({ navigation }) => {
     return (
         <SafeAreaView>
             <View style={styles.constainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter character name"
-                    onChangeText={setInputName}
-                    onSubmitEditing={() => {
-                        getDataFromAPI()
-                    }
-                    }
+            <TextInput
+                autoCorrect={false}
+                autoCapitalize="none"
+                placeholder="Procurar Personagem"
+                value={inputName}
+                onChangeText={setInputName}
+                returnKeyType="send"
+                onSubmitEditing={() => {
+                    getDataFromAPI()
+                }}
                 />
+                <SubmitButton
+                onPress={getDataFromAPI}
+                title="Adicionar"
+                color="#841584"
+  />
                 <FlatList
                     data={characterList}
                     keyExtractor={(item) => { return item.id }}
